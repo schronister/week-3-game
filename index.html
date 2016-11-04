@@ -1,17 +1,35 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Game of Thrones Hangman</title>
+	<title>Chicago Cubs Hangman</title>
 	<script type="text/javascript" src="assets/javascript/game.js"></script>
+    <link rel="stylesheet" type="text/css" href="assets/css/reset.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="assets/css/style.css">
+
 </head>
 <body>
+    <div class="container">
+    <h1>Welcome to the Chicago Cubs Hangman Game!</h1>
 
-<h1>Welcome</h1>
+    <h3>Can you guess the players from the 2016 World Series team?</h3>
+    <br>
+    <h3 id="instructions">Enter your guess:</h3>
 
-<h2 class="start">Enter your first guess to begin</h2>
+    <div id="wordToGuess"></div>
 
-<div id="wordToGuess"></div>
+    <div id="guessesLeft"></div>
+    <br>
+    <div id="lettersGuessed"></div>
+    <div id="alreadyGuessed"></div>
+    <br>
 
+    <div id="playerPhoto"></div>
+    <br>
+    <br>
+    <div id="message"></div>
+
+</div>
 
 
 </body>
