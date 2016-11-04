@@ -17,9 +17,9 @@ var guessesLeft = 10;
 
 
 
-//======FUNCTIONS========
+//======FUNCTIONS========//
 
-//pick a word from secretWords list, save it as wordToGuess array and display it as _ _ _ _ _ for the game.
+//pick a word at random from secretWords list, save it as wordToGuess array and display it as _ _ _ _ _ for the game.
 function startup(){
 	var randIndex = Math.floor(Math.random()*(secretWords.length-1))
 	wordToGuess = secretWords[randIndex].split("");
@@ -30,6 +30,7 @@ function startup(){
 		lettersArray.push("_ ");
 
 	};
+	//put the word (spaces) on the screen
 	addLine = document.createElement("p");
 	addLine.innerHTML = lettersArray.join("");
 	document.getElementById("wordToGuess").appendChild(addLine);
@@ -42,70 +43,72 @@ window.onload = function(){
 	//getting user input, checking for matches, update the display
 
 }
-
+//function for all user input and logic.
 document.onkeyup = function(event){
-		if(gameOver === true){
-			return;
+	if(gameOver === true){
+		return;
+	}
+	//get user input and save it to a variable
+	var userInput = String.fromCharCode(event.keyCode).toLowerCase();
+	//use a boolean to check for matches (so we can loop through the whole word for duplicates)
+	var matchFound = false;
+	var alreadyGuessed = false;
+	//loop through every letter in the word to guess to check for matches.
+	for (var i = 0; i < wordToGuess.length; i++){
+		if (userInput === wordToGuess[i]){
+			//update the lettersarray w/ correct letter(s)
+			lettersArray[i] = wordToGuess[i].toUpperCase();
+			//update the display of the letters
+			addLine.innerHTML = lettersArray.join("");
+			//set the boolean to true 
+			matchFound = true;
+			document.querySelector("#alreadyGuessed").innerHTML = "";
 		}
-		//get user input and save it to a variable
-		var userInput = String.fromCharCode(event.keyCode).toLowerCase();
-		//use a boolean to check for matches (so we can loop through the whole word for duplicates)
-		var matchFound = false;
-		var alreadyGuessed = false;
-		//loop through every letter in the word to guess to check for matches.
-		for (var i = 0; i < wordToGuess.length; i++){
-			if (userInput === wordToGuess[i]){
-				//update the lettersarray w/ correct letter(s)
-				lettersArray[i] = wordToGuess[i].toUpperCase();
-				//update the display of the letters
-				addLine.innerHTML = lettersArray.join("");
-				//set the boolean to true 
-				matchFound = true;
-				document.querySelector("#alreadyGuessed").innerHTML = "";
-			}
-			//check if the current guess has already been made, don't penalize player if so.
-			else if (userInput === incorrectGuesses[i]){
-				alreadyGuessed = true;
-				document.querySelector("#alreadyGuessed").innerHTML = "Already guessed that!";
-			}
+		//check if the current guess has already been made, don't penalize player if so.
+		else if (userInput === incorrectGuesses[i]){
+			alreadyGuessed = true;
+			document.querySelector("#alreadyGuessed").innerHTML = "Already guessed that!";
 		}
-		//if match was found, check whether user has won
-		if (matchFound === true || alreadyGuessed === true){
-			console.log("correct guess");
-			if (lettersArray.includes("_ ") === false){
-				console.log("Game over - WIN");
-				gameOver = true;
-				document.querySelector(".hidden").className = "show";
-				document.querySelector("#message").innerHTML = "Congratulations! You win.<br> Press the spacebar"
-				+ " to start a new game.";
-				document.onkeyup = function(event){
-					if(event.keyCode === 32){
-						location.reload();
-					}
+	}
+	//if match was found, check whether user has won
+	if (matchFound === true || alreadyGuessed === true){
+		console.log("correct guess");
+		if (lettersArray.includes("_ ") === false){
+			console.log("Game over - WIN");
+			gameOver = true;
+			document.querySelector(".hidden").className = "show";
+			document.querySelector("#message").innerHTML = "Congratulations! You win.<br> Press the spacebar"
+			+ " to start a new game.";
+			//start a new game with spacebar
+			document.onkeyup = function(event){
+				if(event.keyCode === 32){
+					location.reload();
 				}
 			}
-		} else{
-			//clear out alreadyGuessed
-			document.querySelector("#alreadyGuessed").innerHTML = "";
-			//checking if user is out of guesses (and updating guesses tag)
-			incorrectGuesses.push(userInput);
-			document.querySelector("#lettersGuessed").innerHTML = "Incorrect Guesses: " +incorrectGuesses.join(" ").toUpperCase();
-			guessesLeft--;
-			console.log("incorrect guess");
-			document.getElementById("guessesLeft").innerHTML = "Guesses Left: " + guessesLeft;
-			if (guessesLeft === 0){
-				console.log("Game over - LOSS");
-				gameOver = true;
-				document.querySelector(".hidden").className = "show .img-responsive";
-				document.querySelector("#message").innerHTML = "Sorry, there's always next year.  The answer was " + wordToGuess.join("").toUpperCase() + ".<br> Press the spacebar"
-				+ " to start a new game.";
-				//start a new game with spacebar:
-				document.onkeyup = function(event){
-					if(event.keyCode === 32){
-						location.reload();
-					}
+		}
+	} else{
+		//clear out alreadyGuessed
+		document.querySelector("#alreadyGuessed").innerHTML = "";
+		//checking if user is out of guesses (and updating guesses tag)
+		incorrectGuesses.push(userInput);
+		document.querySelector("#lettersGuessed").innerHTML = "Incorrect Guesses: " +incorrectGuesses.join(" ").toUpperCase();
+		guessesLeft--;
+		console.log("incorrect guess");
+		document.getElementById("guessesLeft").innerHTML = "Guesses Left: " + guessesLeft;
+		//game over - loss
+		if (guessesLeft === 0){
+			console.log("Game over - LOSS");
+			gameOver = true;
+			document.querySelector(".hidden").className = "show .img-responsive";
+			document.querySelector("#message").innerHTML = "Sorry, there's always next year.  The answer was " + wordToGuess.join("").toUpperCase() + ".<br> Press the spacebar"
+			+ " to start a new game.";
+			//start a new game with spacebar:
+			document.onkeyup = function(event){
+				if(event.keyCode === 32){
+					location.reload();
 				}
 			}
 		}
 	}
+}
 
