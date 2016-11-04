@@ -19,20 +19,19 @@ body{
 
 .container{
     background:rgba(255,255,255,0.8);
-    margin:2% auto;
-    height:88%;
+    margin:0 auto;
+    height:98%;
     border-radius:25px;
 }
 
 html, 
 body {
-    margin:0;
     height: 100%;
 }
 h1{
     text-align: center;
     font-size:3.3em;
-    padding-top:5%;
+    padding-top:1%;
 }
 h2{
     text-align: center;
